@@ -15,3 +15,8 @@ variable "vpc_name" {
 variable "subnet_name" {
   description = "The subnet name from the network module"
 }
+
+variable "cluster_type" {
+  description = "tidb, app, tikv, etc"
+  default = "app"
+}

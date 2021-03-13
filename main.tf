@@ -5,7 +5,7 @@ variable "gke_num_nodes" {
 
 # GKE cluster
 resource "google_container_cluster" "primary" {
-  name     = "${var.project}-gke"
+  name     = "${var.project}-${var.cluster_type}-gke"
   location = var.region
 
   # B/c of how gke creates clusters, it will still create the default pool. If you monitor the deployment, you will see it create 3 default nodes,
