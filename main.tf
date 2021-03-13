@@ -19,11 +19,15 @@ resource "google_container_cluster" "primary" {
 }
 
 # Separately Managed Node Pool
-resource "google_container_node_pool" "primary_nodes" {
-  name       = "${google_container_cluster.primary.name}-node-pool"
+resource "google_container_node_pool" "node_pools" {
+  
+  # Here, we are going iterate over the set of node_pools, and create each one
+  for_each   = var.node_pools
+
+  name       = "${google_container_cluster.primary.name}-${each.key}-node-pool"
   location   = var.region
   cluster    = google_container_cluster.primary.name
-  node_count = var.gke_num_nodes
+  node_count = each.value.node_count
 
   node_config {
     oauth_scopes = [
@@ -36,7 +40,7 @@ resource "google_container_node_pool" "primary_nodes" {
     }
 
     # preemptible  = true
-    machine_type = "n2-standard-2"
+    machine_type = each.value.machine_type
     tags         = ["gke-node", "${var.project}-gke"]
     metadata = {
       disable-legacy-endpoints = "true"

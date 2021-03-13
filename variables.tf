@@ -20,3 +20,10 @@ variable "cluster_type" {
   description = "tidb, app, tikv, etc"
   default = "app"
 }
+
+variable "node_pools" {
+  type = map(object({
+    node_count                     = number
+    machine_type                   = string
+  }))
+}
